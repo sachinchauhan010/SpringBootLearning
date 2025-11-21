@@ -1,0 +1,11 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="specification" class="com.example.autowiring.name.Specification">
+        <property name="make" value="Toyta"/>
+        <property name="model" value="2025"/>
+    </bean>
+    <bean id="car" class="com.example.autowiring.name.Car" autowire="constructor"/>
+</beans>
