@@ -17,10 +17,29 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @GetMapping("/public/products")
+    public ResponseEntity<ProductResponse> getProducts(){
+        ProductResponse productResponse = productService.getProducts();
+        return new ResponseEntity<>(productResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/public/products/{categoryId}")
+    public ResponseEntity<ProductResponse> getProducts(@PathVariable Long categoryId){
+        ProductResponse productResponse = productService.getProductsByCategoryId(categoryId);
+        return new ResponseEntity<>(productResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/public/products/keyword/{keyword}")
+    public ResponseEntity<ProductResponse> getProductsByKeyword(@PathVariable String keyword){
+        ProductResponse productResponse= productService.getProductsByKeyword(keyword);
+        return new ResponseEntity<>(productResponse, HttpStatus.OK);
+    }
+
     @PostMapping("/admin/categories/{categoryId}/add-product")
     public ResponseEntity<ProductDTO> addProduct( @PathVariable Long categoryId, @RequestBody Product product){
         ProductDTO response=productService.addProduct(categoryId, product);
-        System.out.println("Added product is: "+ response);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+
 }
