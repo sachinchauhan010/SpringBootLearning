@@ -1,5 +1,6 @@
 package org.learning.ecom.controllers;
 
+import org.apache.coyote.Response;
 import org.learning.ecom.models.Product;
 import org.learning.ecom.payload.ProductDTO;
 import org.learning.ecom.payload.ProductResponse;
@@ -45,6 +46,12 @@ public class ProductController {
     public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long productId, @RequestBody Product newProduct){
         ProductDTO response= productService.updateProduct(productId, newProduct);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/admin/product/{productId}/delete")
+    public ResponseEntity<ProductResponse> deleteProduct(@PathVariable Long productId){
+        ProductResponse productResponse = productService.deleteProduct(productId);
+        return new ResponseEntity<>(productResponse, HttpStatus.OK);
     }
 
 
