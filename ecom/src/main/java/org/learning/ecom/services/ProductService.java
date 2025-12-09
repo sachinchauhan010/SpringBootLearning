@@ -12,4 +12,5 @@ public interface ProductService {
 
     ProductDTO addProduct(Long categoryId, Product product);
 
+    ProductDTO updateProduct(Long productId, Product newProduct);
 }
