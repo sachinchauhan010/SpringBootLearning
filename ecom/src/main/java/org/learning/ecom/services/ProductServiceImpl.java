@@ -61,8 +61,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDTO updateProduct(Long productId, Product newProduct){
+    public ProductDTO updateProduct(Long productId, ProductDTO newProductDTO){
         Product product= productRepository.findByProductId(productId);
+        Product newProduct= modelMapper.map(newProductDTO,Product.class);
         product.setProductName(newProduct.getProductName());
         product.setPrice(newProduct.getPrice());
         product.setCategory(newProduct.getCategory());
@@ -76,10 +77,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDTO addProduct(Long categoryId, Product product) {
+    public ProductDTO addProduct(Long categoryId, ProductDTO productDTO) {
         Category category = categoryRepository. findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFound("Category", "category id", categoryId));
-
+        Product product = modelMapper.map(productDTO, Product.class);
         product.setCategory(category);
         product.setImage("default.png");
         double discount =product.getPrice()*(product.getDiscount()*0.01);
