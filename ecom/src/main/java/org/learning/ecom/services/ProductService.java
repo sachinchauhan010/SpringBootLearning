@@ -3,6 +3,9 @@ package org.learning.ecom.services;
 import org.learning.ecom.models.Product;
 import org.learning.ecom.payload.ProductDTO;
 import org.learning.ecom.payload.ProductResponse;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 public interface ProductService {
 
@@ -15,4 +18,6 @@ public interface ProductService {
     ProductDTO updateProduct(Long productId, ProductDTO newProductDTO);
 
     ProductResponse deleteProduct(Long productId);
+
+    ProductDTO updateImage(Long productId, MultipartFile image) throws IOException;
 }
