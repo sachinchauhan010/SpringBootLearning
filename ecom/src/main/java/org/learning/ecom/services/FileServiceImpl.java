@@ -1,5 +1,6 @@
 package org.learning.ecom.services;
 
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -8,9 +9,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.UUID;
 
+@Service
 public class FileServiceImpl implements FileService {
 
-    private String uploadImage(String path, MultipartFile file) throws IOException {
+    public String uploadImage(String path, MultipartFile file) throws IOException {
 
         //1. Get the name of original File
         String originalFilename = file.getOriginalFilename();
