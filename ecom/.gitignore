@@ -18,6 +18,11 @@ buildNumber.properties
 /src/main/resources/application-local.properties
 /src/main/resources/application-dev.properties
 /src/main/resources/application-prod.properties
+/src/main/resources/application.properties
+
+**/application-local.properties
+**/application-dev.properties
+**/application-prod.properties
 
 # Log files
 *.log
