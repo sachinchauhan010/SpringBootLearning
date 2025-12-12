@@ -1,5 +1,6 @@
 package org.learning.ecom.controllers;
 
+import jakarta.validation.Valid;
 import org.apache.coyote.Response;
 import org.learning.ecom.models.Product;
 import org.learning.ecom.payload.ProductDTO;
@@ -40,13 +41,13 @@ public class ProductController {
     }
 
     @PostMapping("/admin/categories/{categoryId}/add-product")
-    public ResponseEntity<ProductDTO> addProduct( @PathVariable Long categoryId, @RequestBody ProductDTO productDTO){
+    public ResponseEntity<ProductDTO> addProduct( @PathVariable Long categoryId,@Valid @RequestBody ProductDTO productDTO){
         ProductDTO response=productService.addProduct(categoryId, productDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/admin/product/{productId}/update")
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long productId, @RequestBody ProductDTO newProductDTO){
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long productId,@Valid @RequestBody ProductDTO newProductDTO){
         ProductDTO response= productService.updateProduct(productId, newProductDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

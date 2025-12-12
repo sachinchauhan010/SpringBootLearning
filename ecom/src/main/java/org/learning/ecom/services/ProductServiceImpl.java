@@ -1,5 +1,6 @@
 package org.learning.ecom.services;
 
+import org.learning.ecom.exceptions.APIException;
 import org.learning.ecom.exceptions.ResourceNotFound;
 import org.learning.ecom.models.Category;
 import org.learning.ecom.models.Product;
@@ -13,12 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -38,6 +35,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponse getProducts(){
         List<Product> allProducts= productRepository.findAll();
+
+        if(allProducts.isEmpty()){
+            throw new APIException("No products found");
+        }
 
         List<ProductDTO> productsDto= allProducts.stream().map((product)-> modelMapper.map(product, ProductDTO.class)).toList();
         ProductResponse productResponse = new ProductResponse();
@@ -64,6 +65,9 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse getProductsByKeyword(String keyword){
 
         List<Product> allProducts= productRepository.findByProductNameLikeIgnoreCase("%"+keyword+"%");
+        if(allProducts.isEmpty()){
+            throw new APIException("No product Match");
+        }
         List<ProductDTO> productsDto= allProducts.stream().map((product)-> modelMapper.map(product, ProductDTO.class)).toList();
         ProductResponse productResponse = new ProductResponse();
         productResponse.setContent(productsDto);
@@ -74,6 +78,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDTO updateProduct(Long productId, ProductDTO newProductDTO){
         Product product= productRepository.findByProductId(productId);
+        if(product == null){
+            throw new ResourceNotFound("product","ProductId", productId);
+        }
         Product newProduct= modelMapper.map(newProductDTO,Product.class);
         product.setProductName(newProduct.getProductName());
         product.setPrice(newProduct.getPrice());
@@ -89,8 +96,22 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO addProduct(Long categoryId, ProductDTO productDTO) {
-        Category category = categoryRepository. findById(categoryId)
+        Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFound("Category", "category id", categoryId));
+
+        boolean isPresentProduct = false;
+        List<Product> products = category.getProducts();
+
+        for (Product product : products) {
+            if (product.getProductName().equals(productDTO.getProductName())) {
+                isPresentProduct = true;
+                break;
+            }
+        }
+        if (isPresentProduct) {
+            throw new APIException("product already exists");
+        }
+
         Product product = modelMapper.map(productDTO, Product.class);
         product.setCategory(category);
         product.setImage("default.png");
