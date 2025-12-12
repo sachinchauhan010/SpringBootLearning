@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public interface ProductService {
 
-    ProductResponse getProducts();
+    ProductResponse getProducts(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
     ProductResponse getProductsByCategoryId(Long categoryId);
     ProductResponse getProductsByKeyword(String keyword);
 

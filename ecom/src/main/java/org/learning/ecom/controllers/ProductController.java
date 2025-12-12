@@ -2,6 +2,7 @@ package org.learning.ecom.controllers;
 
 import jakarta.validation.Valid;
 import org.apache.coyote.Response;
+import org.learning.ecom.config.AppConstant;
 import org.learning.ecom.models.Product;
 import org.learning.ecom.payload.ProductDTO;
 import org.learning.ecom.payload.ProductResponse;
@@ -23,8 +24,13 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/public/products")
-    public ResponseEntity<ProductResponse> getProducts(){
-        ProductResponse productResponse = productService.getProducts();
+    public ResponseEntity<ProductResponse> getProducts(
+            @RequestParam (name = "pageNumber", defaultValue = AppConstant.PAGE_NUMBER, required = false) Integer pageNumber,
+            @RequestParam (name = "pageSize", defaultValue = AppConstant.PAGE_SIZE, required = false) Integer pageSize,
+            @RequestParam (name = "sortBy", defaultValue = AppConstant.SORT_PRODUCT_BY, required = false) String sortBy,
+            @RequestParam (name = "sortOrder", defaultValue = AppConstant.SORT_DIR, required = false) String sortOrder
+    ){
+        ProductResponse productResponse = productService.getProducts(pageNumber, pageSize, sortBy, sortOrder);
         return new ResponseEntity<>(productResponse, HttpStatus.OK);
     }
 
